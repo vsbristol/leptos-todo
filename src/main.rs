@@ -6,7 +6,7 @@ use std::collections::HashMap;
 // }
 
 #[component]
-fn App(cx: Scope) -> impl IntoView {
+fn App(cx: Scope, users: Vec<String>, tasks: HashMap<String, HashMap<String, String>>) -> impl IntoView {
     let (count, set_count) = create_signal(cx, 0);
     let (name, set_name) = create_signal(cx, "Enter your username".to_string());
     let input_element: NodeRef<Input> = create_node_ref(cx);
@@ -36,6 +36,7 @@ fn App(cx: Scope) -> impl IntoView {
             />
             <input type="submit" value="Submit"/> 
             </form>
+
             <p>"Loged in as " {name}</p>
 
             // Triger tasks here
@@ -45,7 +46,7 @@ fn App(cx: Scope) -> impl IntoView {
 
 fn main() {
     let users: Vec<String> = Vec::new();
-    let tasks: HashMap<String, String> = HashMap::new();
+    let tasks: HashMap<String, HashMap<String, String>> = HashMap::new();
 
-    mount_to_body(|cx| view! { cx, <App/> })    
+    mount_to_body(|cx| view! { cx, <App users tasks /> })    
 }
