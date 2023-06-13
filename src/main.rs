@@ -1,24 +1,18 @@
-use leptos::{*, html::Input, ev::SubmitEvent};
+use leptos_router::*;
+use leptos::{*};
 use std::collections::HashMap;
 
-// #[component]
-// fn Tasks(cx: Scope, user: &str, tasks: HashMap<String, String>) -> impl IntroView {
-// }
+#[component]
+fn Todo(cx: Scope, ) -> impl IntoView { //tasks: HashMap<String, HashMap<String, String>>
+
+    view! { cx, 
+        <p>"Your loged in as  :)"</p>
+    }
+}
 
 #[component]
-fn App(cx: Scope, users: Vec<String>, tasks: HashMap<String, HashMap<String, String>>) -> impl IntoView {
-    let (count, set_count) = create_signal(cx, 0);
-    let (name, set_name) = create_signal(cx, "Enter your username".to_string());
-    let input_element: NodeRef<Input> = create_node_ref(cx);
-
-    let on_submit = move |ev: SubmitEvent| {
-        ev.prevent_default();
-
-        let value = input_element()
-            .expect("<input> to exist")
-            .value();
-        set_name(value);
-    };
+fn Homepage(cx: Scope) -> impl IntoView {
+    let username: String = String::from("");
 
     view! { cx,
         <style>"h1 {text-align: center;}"</style>
@@ -29,24 +23,26 @@ fn App(cx: Scope, users: Vec<String>, tasks: HashMap<String, HashMap<String, Str
 
         <br></br>
 
-        <form on:submit=on_submit>
-            <input type="text"
-                value=name
-                node_ref=input_element
-            />
-            <input type="submit" value="Submit"/> 
-            </form>
+        <form method="GET" action="/todo/">
+            <input type="username" name="username" value=username/>
+            <input type="submit"/>
+        </form>
 
-            <p>"Loged in as " {name}</p>
-
-            // Triger tasks here
-            // mount_to_body(|cx| view! { cx, <App/> })    
     }
 }
 
 fn main() {
-    let users: Vec<String> = Vec::new();
-    let tasks: HashMap<String, HashMap<String, String>> = HashMap::new();
+    let _users: Vec<String> = Vec::new();
+    let _tasks: HashMap<String, HashMap<String, String>> = HashMap::new();
 
-    mount_to_body(|cx| view! { cx, <App users tasks /> })    
+    mount_to_body(|cx| view! { cx, 
+        <Router>
+            <main>
+                <Routes>
+                    <Route path="/" view=|cx| view! { cx, <Homepage/> }/>
+                    <Route path="/todo" view=|cx| view! { cx, <Todo/> }/> //user: Stringuser: String
+                </Routes>
+            </main>
+        </Router>
+    })    
 }
